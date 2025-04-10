@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selamat Ulang Tahun!</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <!-- tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@3/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-shape-heart@2/tsparticles.shape.heart.min.js"></script>
+  <!-- Balloons.js -->
+  <script type="module" defer>
+    import { balloons } from 'https://cdn.jsdelivr.net/npm/balloons-js/+esm';
+    window.addEventListener('load', () => {
+      const balloonCount = window.innerWidth < 768 ? 20 : 40;
+      balloons({
+        colors: ['#FF6B6B','#FFE66D','#6BCB77','#4D96FF','#FFC0CB'],
+        balloonCount,
+        position: { x:50, y:100 },
+        radius: { min:10, max:40 },
+        rotation: { min:-15, max:15 },
+        speed: { min:1, max:3 }
+      });
+    });
+  </script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    /* Reset & Base */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Poppins',sans-serif; background:#fef9ef; color:#333; overflow-x:hidden; }
+    /* Particles */
+    #tsparticles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+    /* Ornaments */
+    .ornament { position:absolute; border-radius:50%; opacity:0.5; }
+    .circle1 { width:150px; height:150px; background:rgba(255,192,203,0.4); top:10%; left:5%; }
+    .circle2 { width:200px; height:200px; background:rgba(255,255,255,0.3); top:30%; right:10%; }
+    .circle3 { width:100px; height:100px; background:rgba(173,216,230,0.4); bottom:15%; left:20%; }
+    /* Hero */
+    .hero { text-align:center; padding:100px 20px; position:relative; }
+    .hero h1 { font-size:3.5rem; color:#FF6B6B; text-shadow:2px 2px 4px rgba(0,0,0,0.2); }
+    .hero p { font-size:1.2rem; margin-top:10px; color:#555; }
+    /* Countdown */
+    .countdown { display:flex; justify-content:center; gap:20px; margin-top:30px; }
+    .countdown div { background:#fff; padding:15px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); width:80px; }
+    .countdown span { display:block; font-size:2rem; font-weight:600; }
+    .countdown small { display:block; font-size:0.8rem; color:#777; margin-top:5px; }
+    /* Audio */
+    .audio-control { margin-top:20px; }
+    .audio-control button { background:#FF6B6B; color:#fff; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; }
+    /* Swiper */
+    .swiper-container { width:100%; max-width:800px; margin:50px auto; position:relative; }
+    .swiper-slide img { display:block; margin:0 auto; max-height:80vh; border-radius:15px; }
+    .swiper-button-next, .swiper-button-prev { color:#FF6B6B; font-size:2rem; position:absolute; top:50%; transform:translateY(-50%); background:none; border:none; }
+    .swiper-button-prev { left:10px; }
+    .swiper-button-next { right:10px; }
+    .swiper-pagination { text-align:center; margin-top:10px; }
+    /* Timeline */
+    .timeline { position:relative; max-width:800px; margin:80px auto; }
+    .timeline::before { content:''; position:absolute; top:0; left:50%; width:4px; height:100%; background:#ddd; transform:translateX(-50%); }
+    .timeline-item { position:relative; width:50%; padding:20px 40px; }
+    .timeline-item:nth-child(odd) { left:0; text-align:right; }
+    .timeline-item:nth-child(even) { left:50%; text-align:left; }
+    .timeline-item::before { content:''; position:absolute; top:20px; width:20px; height:20px; background:#FF6B6B; border-radius:50%; box-shadow:0 0 0 4px #fef9ef; }
+    .timeline-item:nth-child(odd)::before { right:-10px; }
+    .timeline-item:nth-child(even)::before { left:-10px; }
+    .timeline-item h3 { font-size:1.5rem; margin-bottom:5px; }
+    .timeline-item p { font-size:1rem; color:#555; }
+    /* Messages */
+    .messages { max-width:600px; margin:80px auto; text-align:center; }
+    .messages form { display:flex; gap:10px; }
+    .messages input { flex:1; padding:10px; border:2px solid #ddd; border-radius:50px; }
+    .messages button { background:#6BCB77; color:#fff; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; }
+    .chat { margin-top:30px; display:flex; flex-direction:column; gap:15px; max-height:300px; overflow-y:auto; }
+    .bubble { background:#fff; padding:15px; border-radius:15px; box-shadow:0 4px 8px rgba(0,0,0,0.1); max-width:80%; }
+    .bubble.self { background:#6BCB77; color:#fff; align-self:flex-end; }
+    /* Gifts */
+    .gifts { display:flex; justify-content:center; gap:20px; margin-top:50px; }
+    .gift { font-size:3rem; cursor:pointer; transition:transform .3s; }
+    .gift:hover { transform:rotate(-15deg) scale(1.2); }
+    /* Surprise */
+    .btn-container { display:flex; justify-content:center; margin:50px auto; }
+    .btn-surprise { padding:15px 30px; background:linear-gradient(45deg,#FF416C,#FF4B2B); color:#fff; border:none; border-radius:50px; cursor:pointer; font-size:1.2rem; }
+    /* Modal Video */
+    .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; visibility:hidden; opacity:0; transition:opacity .3s; }
+    .modal.open { visibility:visible; opacity:1; }
+    .modal-content { position:relative; width:90%; max-width:800px; aspect-ratio:16/9; }
+    .modal-content iframe { width:100%; height:100%; border:none; border-radius:15px; }
+    .modal-close { position:absolute; top:-15px; right:-15px; background:#fff; border-radius:50%; width:30px; height:30px; text-align:center; line-height:30px; cursor:pointer; }
+    /* Popup Card */
+    .popup-card { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.8); opacity:0; visibility:hidden; background:#fff; padding:20px 30px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.2); text-align:center; z-index:2000; transition:all .3s; }
+    .popup-card.open { transform:translate(-50%,-50%) scale(1); opacity:1; visibility:visible; }
+    .popup-close { position:absolute; top:10px; right:10px; cursor:pointer; font-size:1.2rem; color:#555; }
+    /* Responsive */
+    @media(max-width:768px){
+      .hero { padding:50px 10px; }
+      .hero h1 { font-size:2.5rem; }
+      .hero p { font-size:1rem; }
+      .timeline::before { left:20px; }
+      .timeline-item { width:100%; padding-left:60px; padding-right:20px; text-align:left!important; }
+      .timeline-item:nth-child(even) { left:0; }
+    }
+    @media(max-width:600px){
+      .messages form { flex-direction:column; }
+      .messages input, .messages button { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particles -->
+  <div id="tsparticles"></div>
+  <div class="ornament circle1"></div>
+  <div class="ornament circle2"></div>
+  <div class="ornament circle3"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Selamat Ulang Tahun, Mamoy Sayang Gemoyku🤗😘!</h1>
+    <p>Semoga senantiasa berada dalam kebahagian, keimanan & taqwa dan juga rasa syukur.</p>
+    <p>(Ada easter egg lohh moyy)</p>
+    <div class="countdown">
+      <div><span id="days">00</span><small>Hari</small></div>
+      <div><span id="hours">00</span><small>Jam</small></div>
+      <div><span id="minutes">00</span><small>Menit</small></div>
+      <div><span id="seconds">00</span><small>Detik</small></div>
+    </div>
+    <div class="audio-control">
+      <button id="playMusic">🎵🎉🎶</button>
+      <audio id="bgMusic" src="happy-birthday.mp3" loop></audio>
+    </div>
+  </section>
+
+  <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper" id="swiperWrapper">
+      <!-- slides di-generate JS -->
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <!-- Timeline -->
+  <section class="timeline">
+    <div class="timeline-item"><h3>Pertama Jalan</h3><p>23 Mei 2024 nonton How to make million grandma die.</p></div>
+    <div class="timeline-item"><h3>Anniversery</h3><p>30 Mei 2022 🩷🩷🩷.</p></div>
+    <div class="timeline-item"><h3>Pertama Ngedate</h3><p>2 Juni 2024, di Indomaret Ahmad Yani Awokwokwkwkwk.</p></div>
+    <div class="timeline-item"><h3>Menikah</h3><p>Soon aamiin.</p></div>
+  </section>
+
+  <!-- Messages -->
+  <section class="messages">
+    <h2>Tinggalin pesan moyyy</h2>
+    <form id="msgForm">
+      <input type="text" id="msgInput" placeholder="Tulis pesan...">
+      <button type="submit">Kirim</button>
+    </form>
+    <div class="chat" id="chatBox"></div>
+  </section>
+
+  <!-- Gifts -->
+  <div class="gifts">
+    <div class="gift">🎁</div>
+    <div class="gift">🎉</div>
+    <div class="gift" id="giftHeart">❤️</div>
+  </div>
+  
+  <!-- Surprise Button -->
+  <div class="btn-container">
+    <button class="btn-surprise" id="surpriseBtn">Klik untuk Kejutan ginuk ginuk</button>
+  </div>
+
+  <!-- Modal Video -->
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">×</span>
+      <iframe src="https://www.youtube.com/embed/VqOu4QYQpu0?rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Popup Card -->
+  <div class="popup-card" id="popupCard">
+    <span class="popup-close" id="closeCard">×</span>
+    <h2>🎉 Cieeee yang 22 Tahun! 🎉</h2>
+    <p>Mamoyyy aku gabisa bikin kata-kata hehehe, jadi......</p>
+    <p>3 words, 5 words, 7 words</p>
+    <p>Always and anytime😘</p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <script>
+    // tsParticles Init
+    (async () => {
+      const { tsParticles, loadHeartShape } = window;
+      await loadHeartShape(tsParticles);
+      await tsParticles.load("tsparticles", {
+        particles: {
+          number: { value:60, density:{ enable:true, area:800 } },
+          color: { value:["#FF6B6B","#FFB6C1","#FFE4E1"] },
+          shape: { type:["heart"] },
+          size: { value:{ min:8, max:16 } },
+          move: { enable:true, speed:2, direction:"top", outModes:{ default:"out" } },
+          opacity: { value:0.8 }
+        },
+        interactivity: {
+          events: { onHover:{ enable:true, mode:"repulse" } },
+          modes: { repulse:{ distance:100 } }
+        },
+        detectRetina:true
+      });
+    })();
+
+    // Countdown Timer
+    let targetDate = new Date('2025-04-10T00:01:00'); // Tanggal 10 April 2025 jam 00:01
+    setInterval(() => {
+      const now = new Date(), diff = Math.max(targetDate - now, 0);
+      document.getElementById('days').textContent    = String(Math.floor(diff/86400000)).padStart(2,'0');
+      document.getElementById('hours').textContent   = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+      document.getElementById('minutes').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+      document.getElementById('seconds').textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
+    }, 1000);
+
+
+    // Audio Control
+    document.getElementById('playMusic').addEventListener('click', () => {
+      const bg = document.getElementById('bgMusic');
+      bg.paused ? bg.play() : bg.pause();
+    });
+
+    // Generate 25 slides
+    const swiperWrapper = document.getElementById('swiperWrapper');
+    for (let i = 1; i <= 25; i++) {
+      const slide = document.createElement('div');
+      slide.className = 'swiper-slide';
+      const img = document.createElement('img');
+      img.src = `images/foto${i}.jpg`;
+      img.alt = `Foto ${i}`;
+      slide.appendChild(img);
+      swiperWrapper.appendChild(slide);
+    }
+
+    // Init Swiper
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      pagination: { el:'.swiper-pagination', clickable:true },
+      navigation: { nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev' },
+      autoplay: { delay:3000, disableOnInteraction:false }
+    });
+
+    // Message Board
+    document.getElementById('msgForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const inp = document.getElementById('msgInput');
+      if (inp.value.trim()) {
+        const b = document.createElement('div');
+        b.className = 'bubble self';
+        b.textContent = inp.value.trim();
+        document.getElementById('chatBox').appendChild(b);
+        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+        inp.value = '';
+      }
+    });
+
+    // Surprise Button & Autoplay
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const modal       = document.getElementById('videoModal');
+    const closeModal  = document.getElementById('closeModal');
+    const bgMusic     = document.getElementById('bgMusic');
+    const iframe      = modal.querySelector('iframe');
+
+    surpriseBtn.addEventListener('click', () => {
+      confetti({ particleCount:200, spread:60, origin:{ y:0.6 } });
+      if (bgMusic.paused) bgMusic.play().catch(() => {});
+      let src = iframe.src;
+      if (!src.includes('autoplay=1')) iframe.src = src + (src.includes('?')?'&':'?') + 'autoplay=1';
+      else iframe.src = src;
+      setTimeout(() => modal.classList.add('open'), 500);
+    });
+    closeModal.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+    // Gift Heart → Popup Card
+    const giftHeart = document.getElementById('giftHeart');
+    const popupCard = document.getElementById('popupCard');
+    const closeCard = document.getElementById('closeCard');
+    giftHeart.addEventListener('click', () => popupCard.classList.add('open'));
+    closeCard.addEventListener('click', () => popupCard.classList.remove('open'));
+
+    // GSAP Ornaments Animation
+    gsap.to('.ornament', {
+      duration:10, yoyo:true, repeat:-1,
+      x:'random(-100,100)', y:'random(-50,50)', ease:'sine.inOut'
+    });
+  </script>
+</body>
+</html>
